@@ -1,19 +1,19 @@
 package com.example.demoSpringBootRestAPI.Entities;
 
-import com.example.demoSpringBootRestAPI.Utils.CategoriaStatus;
+import com.example.demoSpringBootRestAPI.Enums.CategoriaStatus;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Categoria {
     @Id
     @GeneratedValue( strategy = GenerationType.IDENTITY)
     private long id;
+
     private String descricao;
-    private CategoriaStatus status;
+    private CategoriaStatus status = CategoriaStatus.ATIVO;
 
     public Categoria() {
     }

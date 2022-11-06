@@ -1,4 +1,4 @@
-package com.example.demoSpringBootRestAPI.Utils;
+package com.example.demoSpringBootRestAPI.Enums;
 
 public enum CategoriaStatus {
     ATIVO,

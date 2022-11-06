@@ -11,6 +11,12 @@ public class Produto {
     private double preco;
     private double estoque;
 
+    @ManyToOne
+    @JoinColumn(name = "categoria_id",
+                foreignKey = @ForeignKey(name = "categoria_id_fk")
+    )
+    private Categoria categoria;
+
     public Produto() {
     }
 
