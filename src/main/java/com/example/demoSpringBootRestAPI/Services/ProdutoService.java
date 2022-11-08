@@ -1,5 +1,6 @@
 package com.example.demoSpringBootRestAPI.Services;
 
+import com.example.demoSpringBootRestAPI.DTOs.ProdutoDTO;
 import com.example.demoSpringBootRestAPI.Entities.Categoria;
 import com.example.demoSpringBootRestAPI.Entities.Produto;
 import com.example.demoSpringBootRestAPI.Enums.CategoriaStatus;
@@ -21,12 +22,26 @@ public class ProdutoService {
     CategoriaService categoriaService;
 
     @Transactional
-    public Produto save(Produto p) {
-        Categoria c = categoriaService.findById(p.getCategoria().getId());
+    public ProdutoDTO save(ProdutoDTO produtoDTO) {
+        Categoria c = categoriaService.findById(produtoDTO.getCategoria().getId());
         if (c.getStatus() == CategoriaStatus.INATIVO) {
             throw new RuntimeException("Categoria inativa");
         }
-        return produtoRepository.save(p);
+
+        // TODO: Extrair para um método Produto.fromProdutoDTO(ProdutoDTO produtoDTO);
+//        Produto produto = new Produto();
+//        produto.setId(produtoDTO.getId());
+//        produto.setDescricao(produtoDTO.getDescricao());
+//        produto.setPreco(produtoDTO.getPreco());
+//        produto.setEstoque(produtoDTO.getEstoque());
+
+        Produto produto = new Produto();
+        produto.fromProdutoDTO(produtoDTO);
+
+        Produto entidadeProduto = produtoRepository.save(produto);
+        ProdutoDTO retornoDTO = new ProdutoDTO(entidadeProduto);
+
+        return null;
     }
 
     public Produto getById(Long id) {
@@ -40,11 +55,11 @@ public class ProdutoService {
     }
 
     public Produto update(Long id, Produto newProduto) {
-        Produto alteredProduto = this.getById(id);
-        alteredProduto.setDescricao(newProduto.getDescricao());
-        alteredProduto.setPreco(newProduto.getPreco());
-        alteredProduto.setEstoque(newProduto.getEstoque());
-        return produtoRepository.save(alteredProduto);
+        Produto modifiedProduto = this.getById(id);
+        modifiedProduto.setDescricao(newProduto.getDescricao());
+        modifiedProduto.setPreco(newProduto.getPreco());
+        modifiedProduto.setEstoque(newProduto.getEstoque());
+        return produtoRepository.save(modifiedProduto);
     }
 
     @Transactional

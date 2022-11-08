@@ -1,5 +1,6 @@
 package com.example.demoSpringBootRestAPI.Controllers;
 
+import com.example.demoSpringBootRestAPI.DTOs.ProdutoDTO;
 import com.example.demoSpringBootRestAPI.Entities.Produto;
 import com.example.demoSpringBootRestAPI.Services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,9 @@ public class ProdutoController {
     ProdutoService produtoService;
 
     @PostMapping
-    public ResponseEntity<Produto> save(@RequestBody Produto p) {
-        Produto pSaved = produtoService.save(p);
-        return ResponseEntity.status(HttpStatus.CREATED).body(p);
+    public ResponseEntity<ProdutoDTO> save(@RequestBody ProdutoDTO p) {
+        ProdutoDTO presistedProdutoAsDTO = produtoService.save(p);
+        return ResponseEntity.status(HttpStatus.CREATED).body(presistedProdutoAsDTO);
     }
 
     @GetMapping
