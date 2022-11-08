@@ -1,11 +1,17 @@
 package com.example.demoSpringBootRestAPI.Entities;
 
 import com.example.demoSpringBootRestAPI.DTOs.ProdutoDTO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 
 import javax.persistence.*;
 import java.time.Instant;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 public class Produto {
     @Id
@@ -33,49 +39,6 @@ public class Produto {
     @PreUpdate
     public void preUpdate() {
         updatedAt = Instant.now();
-    }
-
-    public Produto() {
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public double getPreco() {
-        return preco;
-    }
-
-    public void setPreco(double preco) {
-        this.preco = preco;
-    }
-
-    public double getEstoque() {
-        return estoque;
-    }
-
-    public void setEstoque(double estoque) {
-        this.estoque = estoque;
-    }
-
-    public Categoria getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
     }
 
     public Produto fromProdutoDTO(ProdutoDTO produtoDTO) {
