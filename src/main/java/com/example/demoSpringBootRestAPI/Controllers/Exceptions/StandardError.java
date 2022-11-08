@@ -13,7 +13,7 @@ public class StandardError implements Serializable {
     private Instant timestamp = Instant.now();
     private int status;
     private String error;
-    private String messagem;
+    private String message;
     private String path;
 
     public StandardError() {

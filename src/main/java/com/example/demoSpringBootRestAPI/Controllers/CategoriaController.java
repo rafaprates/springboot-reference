@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,14 +19,15 @@ public class CategoriaController {
     CategoriaService categoriaService;
 
     @PostMapping
-    public ResponseEntity<Categoria> save(@RequestBody Categoria c) {
+    public ResponseEntity<Categoria> save(@Valid @RequestBody Categoria c) {
         Categoria cSaved = categoriaService.save(c);
         return ResponseEntity.status(HttpStatus.CREATED).body(cSaved);
     }
 
+
     @GetMapping
-    public ResponseEntity<List<Categoria>> findAll() {
-        return ResponseEntity.status(HttpStatus.FOUND).body(categoriaService.findAll());
+    public ResponseEntity<List<Categoria>> findAll(@RequestParam(value = "status", defaultValue = "all") String status) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(categoriaService.findAll(status));
     }
 
 

@@ -1,7 +1,10 @@
 package com.example.demoSpringBootRestAPI.Services;
 
 import com.example.demoSpringBootRestAPI.Entities.Categoria;
+import com.example.demoSpringBootRestAPI.Entities.Produto;
+import com.example.demoSpringBootRestAPI.Enums.CategoriaStatus;
 import com.example.demoSpringBootRestAPI.Repositories.CategoriaRepository;
+import com.example.demoSpringBootRestAPI.Repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +17,24 @@ import java.util.Optional;
 public class CategoriaService {
     @Autowired
     CategoriaRepository categoriaRepository;
+    @Autowired
+    ProdutoRepository produtoRepository;
 
     @Transactional
     public Categoria save(Categoria c) {
         return categoriaRepository.save(c);
     }
 
-    public List<Categoria> findAll() {
+    public List<Categoria> findAll(String status) {
+
+        if (status.equalsIgnoreCase("ativo")) {
+            return categoriaRepository.findAllByStatus(CategoriaStatus.ATIVO);
+        }
+
+        if (status.equalsIgnoreCase("inativo")) {
+            return categoriaRepository.findAllByStatus(CategoriaStatus.INATIVO);
+        }
+
         return categoriaRepository.findAll();
     }
 
@@ -40,6 +54,13 @@ public class CategoriaService {
     @Transactional
     public void delete(Long id) {
         Categoria c = this.findById(id);
-        categoriaRepository.delete(c);
+        List<Produto> childrenOfCategory = produtoRepository.findByCategoria(c);
+
+        if (childrenOfCategory.size() > 0) {
+            c.setStatus(CategoriaStatus.INATIVO);
+            this.save(c);
+        } else {
+            categoriaRepository.delete(c);
+        }
     }
 }

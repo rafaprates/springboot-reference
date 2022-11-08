@@ -1,6 +1,8 @@
 package com.example.demoSpringBootRestAPI.Services;
 
+import com.example.demoSpringBootRestAPI.Entities.Categoria;
 import com.example.demoSpringBootRestAPI.Entities.Produto;
+import com.example.demoSpringBootRestAPI.Enums.CategoriaStatus;
 import com.example.demoSpringBootRestAPI.Repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +17,15 @@ public class ProdutoService {
     @Autowired
     ProdutoRepository produtoRepository;
 
+    @Autowired
+    CategoriaService categoriaService;
+
     @Transactional
     public Produto save(Produto p) {
+        Categoria c = categoriaService.findById(p.getCategoria().getId());
+        if (c.getStatus() == CategoriaStatus.INATIVO) {
+            throw new RuntimeException("Categoria inativa");
+        }
         return produtoRepository.save(p);
     }
 

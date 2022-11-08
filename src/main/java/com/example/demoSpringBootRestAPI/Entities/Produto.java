@@ -11,10 +11,8 @@ public class Produto {
     private double preco;
     private double estoque;
 
+    // Produto is the child entity
     @ManyToOne
-    @JoinColumn(name = "categoria_id",
-                foreignKey = @ForeignKey(name = "categoria_id_fk")
-    )
     private Categoria categoria;
 
     public Produto() {
@@ -50,5 +48,13 @@ public class Produto {
 
     public void setEstoque(double estoque) {
         this.estoque = estoque;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }

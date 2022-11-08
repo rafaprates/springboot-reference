@@ -1,10 +1,11 @@
 package com.example.demoSpringBootRestAPI.Entities;
 
 import com.example.demoSpringBootRestAPI.Enums.CategoriaStatus;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Categoria {
@@ -26,6 +27,7 @@ public class Categoria {
         this.id = id;
     }
 
+    @NotBlank(message = "O campo descrição não pode ser vazio.")
     public String getDescricao() {
         return descricao;
     }

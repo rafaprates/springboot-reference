@@ -2,6 +2,7 @@ package com.example.demoSpringBootRestAPI.Controllers.Exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -16,8 +17,18 @@ public class ResourceExceptionHandler {
         StandardError err = new StandardError();
         // err.setTimestamp(Instant.now());
         err.setStatus(HttpStatus.NOT_FOUND.value());
-        err.setMessagem(e.getMessage());
+        err.setError("Resource not found.");
+        err.setMessage(e.getMessage());
         err.setPath(request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<StandardError> argumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request) {
+        StandardError err = new StandardError();
+        err.setStatus(HttpStatus.BAD_REQUEST.value());
+        err.setMessage(e.getFieldError().getDefaultMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 }
